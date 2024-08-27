@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Afficher les Données JSON</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Données du Fichier JSON</h1>
+    <table id="data-table">
+      <thead>
+        <tr id="table-header">
+          <!-- Les en-têtes de colonnes seront insérés ici -->
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Les lignes de données seront insérées ici -->
+      </tbody>
+    </table>
+
+    <script>
+      // Fonction pour récupérer les données JSON et afficher le tableau
+      async function fetchAndDisplayData() {
+        try {
+          // Récupérer les données JSON
+          const response = await fetch("data.json");
+          if (!response.ok) {
+            throw new Error("Erreur lors du chargement du fichier JSON");
+          }
+          const data = await response.json();
+
+          if (data.length === 0) {
+            document.getElementById("data-table").style.display = "none";
+            return;
+          }
+
+          // Récupérer les en-têtes
+          const headers = Object.keys(data[0]);
+         // console.log(data[0])
+          const thead = document.getElementById("table-header");
+          const tbody = document.getElementById("table-body");
+
+          // Insérer les en-têtes dans le tableau
+          headers.forEach((header) => {
+            const th = document.createElement("th");
+            th.textContent = header;
+            thead.appendChild(th);
+          });
+
+          // Insérer les lignes de données dans le tableau
+          data.forEach((row) => {
+            const tr = document.createElement("tr");
+            headers.forEach((header) => {
+              const td = document.createElement("td");
+              td.textContent = row[header] !== null ? row[header] : "";
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+        } catch (error) {
+          console.error("Erreur:", error);
+        }
+      }
+
+      // Appeler la fonction pour charger les données au démarrage
+      fetchAndDisplayData();
+    </script>
+  </body>
+</html>
