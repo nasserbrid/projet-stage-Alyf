@@ -13,7 +13,7 @@ class excel_file:
     def open_file(self):
             if excel.Visible == True :
                    try:
-                        self.workbook = excel.Workbooks.Open("C:\\Users\\iggdu\\Downloads\\Test-fichier-excel\\Test-fichier-excel\\alyfData.xlsm")
+                        self.workbook = excel.Workbooks.Open("C:\\Users\\nasse\\projet-stage-Alyf\\alyfData.xlsm")
                       
                    except FileNotFoundError:
                          print("Le fichier Excel est introuvable.")
@@ -48,7 +48,7 @@ excel_file01.open_file()
 
 # Ouvrir le fichier Excel
 try:
-    workbook = excel.Workbooks.Open("C:\\Users\\iggdu\\Downloads\\Test-fichier-excel\\Test-fichier-excel\\alyfData.xlsm")
+    workbook = excel.Workbooks.Open("C:\\Users\\nasse\\projet-stage-Alyf\\alyfData.xlsm")
 except FileNotFoundError:
     print("Le fichier Excel est introuvable.")
     excel.Quit()
@@ -71,7 +71,7 @@ print("La valeur de la cellule H1 est:", cell_value)
 worksheet.Cells(1, 8).Value = "HUYNH"
 
 # Sauvegarder les modifications dans un nouveau fichier
-workbook.SaveAs("C:\\Users\\iggdu\\Downloads\\Test-fichier-excel\\Test-fichier-excel\\alyfDev.xlsm")
+workbook.SaveAs("C:\\Users\\nasse\\projet-stage-Alyf\\alyfDev.xlsm")
 
 
 # Fermer le classeur et quitter Excel

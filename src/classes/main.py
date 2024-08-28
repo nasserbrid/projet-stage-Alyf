@@ -49,7 +49,7 @@ Module1 = Module.Module("Virtualisation", date(2024, 8, 31),  date(2024, 10, 10)
 
 Module1.getInfo()
 
-Module1.get_module_from_dataframe()
+Module1.create_fullYearTeachingDataFrame_from_instructorSheet()
 
 
 

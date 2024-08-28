@@ -4,8 +4,8 @@ import json
 from datetime import datetime
 
 # Chemin du fichier Excel à lire
-excel_path = "C:\\Users\\iggdu\\Downloads\\Test-fichier-excel\\Test-fichier-excel\\alyfDev.xlsm"  
-output_path = "C:\\Users\\iggdu\\Downloads\\Test-fichier-excel\\Test-fichier-excel\\data.json"
+excel_path = "C:\\Users\\nasse\\projet-stage-Alyf\\alyfDev.xlsm"  
+output_path = "C:\\Users\\nasse\\projet-stage-Alyf\\data.json"
 
 # Charger le fichier Excel avec pandas
 try:
