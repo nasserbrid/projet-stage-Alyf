@@ -77,42 +77,45 @@ class Module:
               exit(1)
                   
            for month in range(2,13):
+                  # print(f"{month}")
                    i+=3
                    df = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None, usecols=[i, i+1, i+2], skiprows=3, index_col=None)
+                  # print(df)
                    df = df.fillna('')
                                            
            # Convertir les objets datetime en chaînes de caractères
-           def convert_dates(value):
-                if isinstance(value, datetime):
-                    return value.strftime("%Y-%m-%d %H:%M:%S")
-                return value
+        #   # def convert_dates(value):
+        #         if isinstance(value, datetime):
+        #             return value.strftime("%Y-%m-%d %H:%M:%S")
+        #         return value
        
            
            # Renommer les colonnes de df2 pour qu'elles correspondent à celles de df1
-           df.columns = df_fullYearTeachingData.columns
-           print(f"{df_fullYearTeachingData.columns} df1 colums")
+                   df.columns = df_fullYearTeachingData.columns
+                  # print(f"{df_fullYearTeachingData.columns} df1 colums")
 
            
            # Concaténation des deux DataFrames verticalement
-           df_fullYearTeachingData = pd.concat([df_fullYearTeachingData, df])
+                   df_fullYearTeachingData = pd.concat([df_fullYearTeachingData, df])
+           #print(df_fullYearTeachingData)
            #print(concat)
 
           # Réinitialisation de l'index si nécessaire
-           df_fullYearTeachingData.reset_index(drop=True, inplace=True)
+                   df_fullYearTeachingData.reset_index(drop=True, inplace=True)
           # print(concat)
 
 
       # Affichage du résultat
-           pd.set_option('display.max_rows', None)
+                   pd.set_option('display.max_rows', None)
            #print(concat)
-           df_fullYearTeachingData.dropna(subset=[0],  inplace= True)
-           df_fullYearTeachingData = df_fullYearTeachingData.map(convert_dates)
+                   df_fullYearTeachingData.dropna(subset=[0],  inplace= True)
+                   # df_fullYearTeachingData = df_fullYearTeachingData.map(convert_dates)
         #    df = df.map(convert_dates)
-           print(df_fullYearTeachingData)
+          # print(df_fullYearTeachingData)
            
        # Récupération du nom des modules uniques
-           print(f"les valeurs unique sont :{df_fullYearTeachingData[1].unique()}")
-        
+          # print(f"les valeurs unique sont :{df_fullYearTeachingData[1].unique()}")
+           return df_fullYearTeachingData
            """Cette partie est à l'utilisation de la classe Calendar_Planning   
         # # Convertir le DataFrame en JSON
         #    df_fullYearTeachingData = df_fullYearTeachingData.to_dict(orient='records')
@@ -126,9 +129,65 @@ class Module:
            """          
                  
 
-    def create_module():
+    def create_module(self):
+           df  = self.create_fullYearTeachingDataFrame_from_instructorSheet()
+
+           liste_de_cours = df[1].unique()
+
+           for cours in liste_de_cours:
+                  print(cours)
+                  dates = df.index[df[1]==cours]
+                  dates_vals = []
+                  for date in dates:
+                         dates_vals.append(date)
+                  print(dates_vals)
+
+                  blocks = [[dates_vals[0]]]
+
+                  for i in range(1,len(dates_vals)):
+                         if dates_vals[i] - dates_vals[i-1] == 1:
+                                blocks[-1].append(dates_vals[i])
+                         else:
+                                blocks.append([])
+                                blocks[-1].append(dates_vals[i])
+                  print(blocks)
+
+                         
+                        
+
+
+
+                #   test_dates = dates
+
+                #   c = test_dates.values
+
+                #   dates_du_cours = c[0]
+
+                #   for i in range(1, len(c)):
+                #          if c[i] - c[i-1] == 1:
+                #                 dates_du_cours.append(c[i])
+                #          else:
+                #                 print('dates not contiguous')
+                #   print(dates_du_cours)
+                  
+
+                  #for i in range(0,len(test_dates)):
+                        # instance_cours = []
+                         
+                         
+                
+                  
+                                  
+
+
+        #    ind = df[1].eq("Linux Scripting Bash").idxmin()
+        #    print(ind)
+                 
+
+        
+           
             #cette methode permettra de recuperer toutes les infos du module
-        return 
+        
            
 
 

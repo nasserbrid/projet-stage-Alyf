@@ -58,11 +58,9 @@ excel.open_worksheet()
 Module1 = Module.Module("Virtualisation", date(2024, 8, 31),  date(2024, 10, 10), "PRF Orly", ["linux", "windows server"], ["python"," java"]  )
 
 
-Module1.getInfo()
+#Module1.getInfo()
 
-Module1.create_fullYearTeachingDataFrame_from_instructorSheet()
-
-
+Module1.create_module()
 
 
 
