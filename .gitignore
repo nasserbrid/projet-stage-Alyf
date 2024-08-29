@@ -1,3 +1,6 @@
 .vscode/ 
 node_modules/
 *.pyc
+.env
+C:\Users\iggdu\Downloads\Test-fichier-excel\Test-fichier-excel\alyfData.xlsm
+C:\Users\iggdu\Downloads\Test-fichier-excel\Test-fichier-excel\alyfDev.xlsm

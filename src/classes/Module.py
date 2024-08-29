@@ -2,6 +2,7 @@ import ExcelFile
 import pandas as pd
 import json
 from datetime import datetime 
+import os
 
 
 class Module:
@@ -57,8 +58,9 @@ class Module:
     #Définir une méthode qui permet d'utiliser le dataframe et qui va récupérer des sessions dans "DEV WEB"
     def create_fullYearTeachingDataFrame_from_instructorSheet(self):
            
-           excel_path = "C:\\Users\\nasse\\projet-stage-Alyf\\alyfDev.xlsm"
-           output_path = "C:\\Users\\nasse\\projet-stage-Alyf\\data.json"
+           excel_path = os.getenv("ALYFDEVPATH")
+           output_path = os.getenv("ALYFJSONPATH")
+           
                
            
            try:
@@ -74,7 +76,7 @@ class Module:
               print('La feuille "DEV WEB" est introuvable.')
               exit(1)
                   
-           for j in range(2,13):
+           for month in range(2,13):
                    i+=3
                    df = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None, usecols=[i, i+1, i+2], skiprows=3, index_col=None)
                    df = df.fillna('')
@@ -108,7 +110,7 @@ class Module:
         #    df = df.map(convert_dates)
            print(df_fullYearTeachingData)
            
-       # Récupération des modules
+       # Récupération du nom des modules uniques
            print(f"les valeurs unique sont :{df_fullYearTeachingData[1].unique()}")
         
            """Cette partie est à l'utilisation de la classe Calendar_Planning   

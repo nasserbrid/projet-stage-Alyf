@@ -1,5 +1,8 @@
 import win32com.client
 import time
+import os
+from dotenv import load_dotenv, dotenv_values 
+load_dotenv() 
 
 
 
@@ -27,7 +30,7 @@ class ExcelFile:
                        
                        # self.workbook = self.EXCEL.Workbooks.Open("C:\\Users\\nasse\\projet-stage-Alyf\\Test-fichier-excel\\alyfData.xlsm")
                        
-                        self.workbook = ExcelFile.EXCEL.Workbooks.Open("C:\\Users\\nasse\\projet-stage-Alyf\\alyfDev.xlsm")
+                        self.workbook = ExcelFile.EXCEL.Workbooks.Open(os.getenv("AlyfMasterpath"))
                         print(self.workbook)
                 
                         self.worksheet = self.workbook.Sheets("DEV WEB")
@@ -57,7 +60,7 @@ class ExcelFile:
           
           self.worksheet.Cells(1, 8).Value = formateur_name
        
-          self.workbook.SaveAs("C:\\Users\\nasse\\projet-stage-Alyf\\alyfDev.xlsm")
+          self.workbook.SaveAs(os.getenv("AlyfDevpath"))
           
           self.workbook.Close(SaveChanges=True)
         

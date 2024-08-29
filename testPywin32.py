@@ -1,4 +1,5 @@
 import win32com.client
+import os
 
 # Créer une instance d'Excel
 excel = win32com.client.Dispatch("Excel.Application")
@@ -48,7 +49,7 @@ excel_file01.open_file()
 
 # Ouvrir le fichier Excel
 try:
-    workbook = excel.Workbooks.Open("C:\\Users\\nasse\\projet-stage-Alyf\\alyfData.xlsm")
+    workbook = excel.Workbooks.Open(os.getenv("AlyfMasterpath"))
 except FileNotFoundError:
     print("Le fichier Excel est introuvable.")
     excel.Quit()
@@ -71,7 +72,7 @@ print("La valeur de la cellule H1 est:", cell_value)
 worksheet.Cells(1, 8).Value = "HUYNH"
 
 # Sauvegarder les modifications dans un nouveau fichier
-workbook.SaveAs("C:\\Users\\nasse\\projet-stage-Alyf\\alyfDev.xlsm")
+workbook.SaveAs(os.getenv("AlyfDevpath"))
 
 
 # Fermer le classeur et quitter Excel
