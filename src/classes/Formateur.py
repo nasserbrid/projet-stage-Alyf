@@ -1,5 +1,10 @@
-
 import ExcelFile
+# importing os module for environment variables
+import os
+# importing necessary functions from dotenv library
+from dotenv import load_dotenv, dotenv_values 
+# loading variables from .env file
+load_dotenv() 
 
 class Formateur:
     def __init__(self,id, first_name, last_name, email):

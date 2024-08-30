@@ -3,16 +3,23 @@ import Administrateur
 import Formateur
 import Module
 import ExcelFile
+import pandas as pd
 #import win32com.client
 from queue import Queue
 from datetime import date
+# importing os module for environment variables
+import os
+# importing necessary functions from dotenv library
+from dotenv import load_dotenv, dotenv_values 
+# loading variables from .env file
+# load_dotenv() 
 
 #excel = win32com.client.Dispatch("Excel.Application")
 
 #print(f"{ExcelFile.excel} excel var")
 
 
-# test1 = ExcelFile.ExcelFile()
+test1 = ExcelFile.ExcelFile()
 
 # new_formateur = Formateur.Formateur(144, "Eleonor","Huyhn", "h@h.fr")
 # new_formateur.consulterPlanning()
@@ -47,9 +54,17 @@ test1.get_formateur_worksheet("huynh")"""
 Module1 = Module.Module("Virtualisation", date(2024, 8, 31),  date(2024, 10, 10), "PRF Orly", ["linux", "windows server"], ["python"," java"]  )
 
 
-Module1.getInfo()
+#Module1.getInfo()
 
-Module1.create_fullYearTeachingDataFrame_from_instructorSheet()
+#test1.open_worksheet("")
+
+#test1.create_fullYearTeachingDataFrame_from_instructorSheet()
+
+#test1.create_module()
+
+
+
+test1.get_session_dataframe("Sessions Alternantes")
 
 
 

@@ -1,7 +1,13 @@
 import ExcelFile
 import pandas as pd
 import json
-from datetime import datetime 
+from datetime import datetime
+# importing os module for environment variables
+import os
+# importing necessary functions from dotenv library
+from dotenv import load_dotenv, dotenv_values 
+# loading variables from .env file
+load_dotenv() 
 
 
 class Module:
@@ -54,79 +60,106 @@ class Module:
     
 
 
-    #Définir une méthode qui permet d'utiliser le dataframe et qui va récupérer des sessions dans "DEV WEB"
-    def create_fullYearTeachingDataFrame_from_instructorSheet(self):
+#     #Définir une méthode qui permet d'utiliser le dataframe et qui va récupérer des sessions dans "DEV WEB"
+#     def create_fullYearTeachingDataFrame_from_instructorSheet(self):
            
-           excel_path = "C:\\Users\\nasse\\projet-stage-Alyf\\alyfDev.xlsm"
-           output_path = "C:\\Users\\nasse\\projet-stage-Alyf\\data.json"
+#            excel_path = os.getenv("ALYFDEVPATH")
+           
+#            #output_path = os.getenv("ALYFJSONPATH")
                
            
-           try:
-                  i=0 
-                  df_fullYearTeachingData = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None,  usecols=[i,i+1,i+2], skiprows=3, index_col=None)
-                  df_fullYearTeachingData = df_fullYearTeachingData.fillna('')
+#            try:
+#                   i=0 
+#                   df_fullYearTeachingData = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None,  usecols=[i,i+1,i+2], skiprows=3, index_col=None)
+#                   df_fullYearTeachingData = df_fullYearTeachingData.fillna('')
                
                               
-           except FileNotFoundError:
-                   print("Le fichier Excel est introuvable.")
-                   exit(1)
-           except ValueError:
-              print('La feuille "DEV WEB" est introuvable.')
-              exit(1)
+#            except FileNotFoundError:
+#                    print("Le fichier Excel est introuvable.")
+#                    exit(1)
+#            except ValueError:
+#               print('La feuille "DEV WEB" est introuvable.')
+#               exit(1)
                   
-           for j in range(2,13):
-                   i+=3
-                   df = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None, usecols=[i, i+1, i+2], skiprows=3, index_col=None)
-                   df = df.fillna('')
+#            for month in range(2,13):
+#                    i +=3
+#                    df = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None, usecols=[i, i+1, i+2], skiprows=3, index_col=None)
+#                    df = df.fillna('')
                                            
-           # Convertir les objets datetime en chaînes de caractères
-           def convert_dates(value):
-                if isinstance(value, datetime):
-                    return value.strftime("%Y-%m-%d %H:%M:%S")
-                return value
+#            # Convertir les objets datetime en chaînes de caractères
+#         #    def convert_dates(value):
+#         #         if isinstance(value, datetime):
+#         #             return value.strftime("%Y-%m-%d %H:%M:%S")
+#         #         return value
        
            
-           # Renommer les colonnes de df2 pour qu'elles correspondent à celles de df1
-           df.columns = df_fullYearTeachingData.columns
-           print(f"{df_fullYearTeachingData.columns} df1 colums")
+#            # Renommer les colonnes de df2 pour qu'elles correspondent à celles de df1
+#                    df.columns = df_fullYearTeachingData.columns
+#                    #print(f"{df_fullYearTeachingData.columns} df1 colums")
 
            
-           # Concaténation des deux DataFrames verticalement
-           df_fullYearTeachingData = pd.concat([df_fullYearTeachingData, df])
-           #print(concat)
+#            # Concaténation des deux DataFrames verticalement
+#                    df_fullYearTeachingData = pd.concat([df_fullYearTeachingData, df])
+         
 
-          # Réinitialisation de l'index si nécessaire
-           df_fullYearTeachingData.reset_index(drop=True, inplace=True)
-          # print(concat)
+#           # Réinitialisation de l'index si nécessaire
+#                    df_fullYearTeachingData.reset_index(drop=True, inplace=True)
+       
 
 
-      # Affichage du résultat
-           pd.set_option('display.max_rows', None)
-           #print(concat)
-           df_fullYearTeachingData.dropna(subset=[0],  inplace= True)
-           df_fullYearTeachingData = df_fullYearTeachingData.map(convert_dates)
-        #    df = df.map(convert_dates)
-           print(df_fullYearTeachingData)
+#       # Affichage du résultat
+#                    pd.set_option('display.max_rows', None)
+#            #print(concat)
+#                    df_fullYearTeachingData.dropna(subset=[0],  inplace= True)
+#                    #df_fullYearTeachingData = df_fullYearTeachingData.map(convert_dates)
+      
+#            return df_fullYearTeachingData
            
-       # Récupération des modules
-           print(f"les valeurs unique sont :{df_fullYearTeachingData[1].unique()}")
+#        # Récupération des modules
+#                    #print(f"les valeurs unique sont :{df_fullYearTeachingData[1].unique()}")
         
-           """Cette partie est à l'utilisation de la classe Calendar_Planning   
-        # # Convertir le DataFrame en JSON
-        #    df_fullYearTeachingData = df_fullYearTeachingData.to_dict(orient='records')
-        #    #print(df1[0].keys())
+#            """Cette partie est à l'utilisation de la classe Calendar_Planning   
+#         # # Convertir le DataFrame en JSON
+#         #    df_fullYearTeachingData = df_fullYearTeachingData.to_dict(orient='records')
+#         #    #print(df1[0].keys())
 
 
-        # # Sauvegarder les données au format JSON
-        #    with open(output_path, 'w', encoding='utf-8') as json_file:
-        #            json.dump(df_fullYearTeachingData, json_file, ensure_ascii=False, indent=4, default="str")
-        #            print(f"Les données ont été exportées avec succès vers {output_path}")
-           """          
-                 
+#         # # Sauvegarder les données au format JSON
+#         #    with open(output_path, 'w', encoding='utf-8') as json_file:
+#         #            json.dump(df_fullYearTeachingData, json_file, ensure_ascii=False, indent=4, default="str")
+#         #            print(f"Les données ont été exportées avec succès vers {output_path}")
+#            """          
+     
+#      #Pour des raisons de lisibilité, nous utiliserons une autre méthode pour transformer nos données en JSON.            
 
-    def create_module():
-            #cette methode permettra de recuperer toutes les infos du module
-        return 
+#     def create_module(self):
+#             #cette methode permettra de recuperer toutes les infos du module
+#             #On récupère les modules
+            
+#            df  = self.create_fullYearTeachingDataFrame_from_instructorSheet()
+           
+
+#            liste_de_cours = df[1].unique()
+
+#            for cours in liste_de_cours:
+#                   print(cours)
+#                   dates = df.index[df[1]==cours]
+#                   dates_vals = []
+#                   for date in dates:
+#                          dates_vals.append(date)
+#                   print(dates_vals)
+
+#                   blocks = [[dates_vals[0]]]
+
+#                   for i in range(1,len(dates_vals)):
+#                          if dates_vals[i] - dates_vals[i-1] == 1:
+#                                 blocks[-1].append(dates_vals[i])
+#                          else:
+#                                 blocks.append([])
+#                                 blocks[-1].append(dates_vals[i])
+#                   print(blocks)
+                    
+                     
            
 
 
