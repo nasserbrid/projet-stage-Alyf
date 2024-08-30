@@ -64,15 +64,16 @@ Module1 = Module.Module("Virtualisation", date(2024, 8, 31),  date(2024, 10, 10)
 #Module1.getInfo()
 #Module1.getInfo()
 
-#test1.open_worksheet("")
+test1.open_worksheet("")
 
-#test1.create_fullYearTeachingDataFrame_from_instructorSheet()
+test1.create_fullYearTeachingDataFrame_from_instructorSheet("DEV WEB")
 
-#test1.create_module()
+test1.create_module("DEV WEB")
 
 
 
 test1.get_session_dataframe("Sessions Alternantes")
+test1.create_list_cours_termines_et_futur("Réseaux - Révision Réseau TCP/IP","Sessions Alternantes")
 
 
 
