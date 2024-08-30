@@ -51,9 +51,17 @@ test1.get_formateur_worksheet("huynh")"""
 # print("\nElements retired from the queue")
 # print(q.get())
 # print(q.get())
+
+
+excel = ExcelFile.ExcelFile()
+excel.open_worksheet()
+
+
+
 Module1 = Module.Module("Virtualisation", date(2024, 8, 31),  date(2024, 10, 10), "PRF Orly", ["linux", "windows server"], ["python"," java"]  )
 
 
+#Module1.getInfo()
 #Module1.getInfo()
 
 #test1.open_worksheet("")
