@@ -4,6 +4,7 @@ import time
 import os
 import Module
 import pandas as pd
+from datetime import date
 # importing necessary functions from dotenv library
 from dotenv import load_dotenv, dotenv_values 
 # loading variables from .env file
@@ -209,10 +210,27 @@ class ExcelFile:
          
          
          #print(df.head(1))
-         df_test = df.head(1)
-         print(df_test)
-         for columns in range(0,85):
-             print(df_test[columns])
+         df_test = df.head(3)
+         #print(df_test)
+        #  for columns in range(0,85):
+        #      print(df_test[columns])
+        
+        #df_date = df.head(3)
+             
+         df_date = pd.read_excel(excel_path, sheet_name=sheetName, usecols=[0],skiprows=3, header=None)
+         
+          
+         #print(df_date.index[df_date[0]== df_date.loc[0]])
+         d = date(2022,12,24)
+         print(df_date.loc[0])
+         
+         
+         
+         
+         
+         
+         
+         
          
          
         
