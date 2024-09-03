@@ -25,9 +25,9 @@ class Formateur:
         self.__last_name = name
 
 
-    def consulter_planning(self):
+    def consulter_planning(self,sheetName):
         file = ExcelFile.ExcelFile()
-        file.open_worksheet()
+        file.open_worksheet(sheetName)
         file.get_formateur_worksheet(self.get_last_name())
 
         

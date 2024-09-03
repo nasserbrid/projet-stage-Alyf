@@ -16,6 +16,7 @@ load_dotenv()
 
 class ExcelFile:
     EXCEL = win32com.client.Dispatch("Excel.Application")
+   # EXCEL.DisplayAlerts = False attempting to overwrite without notification
     def __init__(self, workbook= None , worksheet= None, macro = None):
         self.workbook = workbook
         self.worksheet = worksheet 
@@ -70,13 +71,13 @@ class ExcelFile:
           self.workbook.Close(SaveChanges=True)
         
           #self.EXCEL.Quit()
-          
+       
 
           ExcelFile.EXCEL.Quit()
           
           
     #Définir une méthode qui permet d'utiliser le dataframe et qui va récupérer des sessions dans "DEV WEB"
-    def create_fullYearTeachingDataFrame_from_instructorSheet(self, sheetName):
+    def create_fullYearTeachingDataFrame_from_instructorSheet(self):
            
            excel_path = os.getenv("ALYFDEVPATH")
            
@@ -85,7 +86,7 @@ class ExcelFile:
            
            try:
                   i=0 
-                  df_fullYearTeachingData = pd.read_excel(excel_path, sheet_name=sheetName, header=None,  usecols=[i,i+1,i+2], skiprows=3, index_col=None)
+                  df_fullYearTeachingData = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None,  usecols=[i,i+1,i+2], skiprows=3, index_col=None)
                   df_fullYearTeachingData = df_fullYearTeachingData.fillna('')
                
                               
@@ -98,7 +99,7 @@ class ExcelFile:
                   
            for month in range(2,13):
                    i +=3
-                   df = pd.read_excel(excel_path, sheet_name=sheetName, header=None, usecols=[i, i+1, i+2], skiprows=3, index_col=None)
+                   df = pd.read_excel(excel_path, sheet_name="DEV WEB", header=None, usecols=[i, i+1, i+2], skiprows=3, index_col=None)
                    df = df.fillna('')
                                            
            # Convertir les objets datetime en chaînes de caractères
@@ -127,6 +128,7 @@ class ExcelFile:
            #print(concat)
                    df_fullYearTeachingData.dropna(subset=[0],  inplace= True)
                    #df_fullYearTeachingData = df_fullYearTeachingData.map(convert_dates)
+          # print(df_fullYearTeachingData)
       
            return df_fullYearTeachingData
            
@@ -147,49 +149,141 @@ class ExcelFile:
      
      #Pour des raisons de lisibilité, nous utiliserons une autre méthode pour transformer nos données en JSON.            
 
-    def create_module(self, sheetName):
+    def create_module(self):
             #cette methode permettra de recuperer toutes les infos du module
             #On récupère les modules
             
-           df  = self.create_fullYearTeachingDataFrame_from_instructorSheet(sheetName)
+           df  = self.create_fullYearTeachingDataFrame_from_instructorSheet()
+         
+          
            
 
            liste_de_cours = df[1].unique()
+           liste_de_cours= list(filter(len, liste_de_cours))
+          # print(f"liste de cours: {liste_de_cours}")
 
+           #print(f"{liste_de_cours} liste de cours")
+           dico_module = {}
+           
            for cours in liste_de_cours:
-                  print(cours)
+                  dico_module[cours] = {}
+                  
+                  #print(cours)
                   dates = df.index[df[1]==cours]
+                  #print(f"datesindex: {dates}")
                   dates_vals = []
                   for date in dates:
                          dates_vals.append(date)
-                  print(f"vérification de dates_vals : {dates_vals}")
+                 # print(f" dates_vals: {dates_vals} ")
+                 # print(f"vérification de dates_vals : {dates_vals}")
 
                   blocks = [[dates_vals[0]]]
 
                 
 
                   for i in range(1,len(dates_vals)):
-                         if dates_vals[i] - dates_vals[i-1] == 1:
-                                blocks[-1].append(dates_vals[i])
-                         else:
-                                blocks.append([])
-                                blocks[-1].append(dates_vals[i])
-                  print(f"vérification de blocks : {blocks}")
+                           if dates_vals[i] - dates_vals[i-1] == 1:
+                                          blocks[-1].append(dates_vals[i])
+                           else:
+                                   blocks.append([])
+                                   blocks[-1].append(dates_vals[i])
+                          # print(f" blocks: {blocks}")
                   
-                  for j in range(0, len(blocks)):
-                      module_test = Module.Module(df[1].iloc[blocks[0][0]], df[0].iloc[blocks[j][0]], 
-                                                  df[0].iloc[blocks[j][-1]],df[2].iloc[blocks[0][0]],"", "")
-                      liste_cours_termines_et_futurs =  self.create_list_cours_termines_et_futur(module_test.get_nom_module,sheetName)
+                 # print(f"blocks:{blocks}")
 
-                      module_test.set_modules_termines = liste_cours_termines_et_futurs[0]
-                      module_test.set_modules_a_venir = liste_cours_termines_et_futurs[1]
+                #   for date in blocks:
+                #            print(df[0].iloc[date])
+                     
+
+                
+                  for j in range(0, len(blocks)):
+                            # print(j)
+                             #modkey = j
+                             dico_module[cours][j] = Module.Module(df[1].iloc[blocks[0][0]], df[0].iloc[blocks[j][0]], 
+                                                  df[0].iloc[blocks[j][-1]],df[2].iloc[blocks[0][0]],[],[])
+                 
+          # print(self.find_session_type(dico_module["Ecoute & Relation Clients"][0].get_session()))
+                  
+           list_session = []
+          # print(dico_module)
+
+           testmod = dico_module["Ecoute & Relation Clients"][0]
+
+           listecoursterminesetfuturs = self.create_list_cours_termines_et_futur(testmod.get_nom_module(),self.find_session_type(testmod.get_session()), testmod.get_session())
+          # print(listecoursterminesetfuturs)
+
+           #print(f" liste cours termines et futur{listecoursterminesetfuturs}")
+
+           c = self.create_list_cours_termines_et_futur(testmod.get_nom_module(),self.find_session_type(testmod.get_session()), testmod.get_session())
+
+          # print(c[0])
+
+
+
+           testmod.set_modules_termines(c[0])
+           testmod.set_modules_a_venir(c[1])
+
+           print(testmod.get_modules_termines())
+           print(testmod.get_modules_a_venir())
+                #       module_test.set_modules_a_venir = liste_cours_termines_et_futurs[1]
+        #    for key in dico_module:
+        #               for internal_key in dico_module[key]:
+        #                              liste_cours_termines_et_futurs =  self.create_list_cours_termines_et_futur(dico_module[key][internal_key].get_nom_module ,self.find_session_type(dico_module[key][internal_key].get_session()),dico_module[key][internal_key].get_session())
+        #                      # list_session.append(self.find_session_type(dico_module[key][internal_key].get_session()))
+        #               print(liste_cours_termines_et_futurs)                 
+                              
+                  
+                   
+              
+                 
+            
+
+        #    for k in range(0, len(dico_module)):
+        #           print(dico_module[k].get_nom_module())
+        #           print(dico_module[k].get_date_debut())
+        #           print(dico_module[k].get_date_fin())
+        #           print(dico_module[k].get_session())
+                         
+                 
+                 
+                               
+                       
+                               
+                        
+                              
+                                
+           #print(f"vérification de blocks : {blocks}")
+
+           
+
+           
+            
+                 
+
+        #    module_test2 = Module.Module(df[1].iloc[blocks[0][0]], df[0].iloc[blocks[0][0]],df[0].iloc[blocks[0][-1]],df[2].iloc[blocks[0][0]],[],[] )
+        #    print(f":nom de module:{module_test2.get_nom_module()}\n date de debut: {module_test2.get_date_debut()}\n date de fin: {module_test2.get_date_fin()}")
+
+           
+               
+        #    for j in range(0, len(blocks)):
+        #                       f"" = Module.Module(df[1].iloc[blocks[0][0]], df[0].iloc[blocks[j][0]], 
+        #                                           df[0].iloc[blocks[j][-1]],df[2].iloc[blocks[0][0]],[], [])
+                     
+                     
+          
+                    
+                #   print(module_test.get_nom_module())
+                #       liste_cours_termines_et_futurs =  self.create_list_cours_termines_et_futur(module_test.get_nom_module ,self.find_session_type(module_test.get_session()))
+
+                #       module_test.set_modules_termines = liste_cours_termines_et_futurs[0]
+                #       module_test.set_modules_a_venir = liste_cours_termines_et_futurs[1]
 
 
                 
                       
-                      print(module_test.get_nom_module())
-                      print(module_test.get_date_debut())
-                      print(module_test.get_date_fin())
+                #       print(module_test.get_nom_module())
+                #       print(module_test.get_date_debut())
+                #       print(module_test.get_date_fin())
                   
                 #   for index_value in blocks[0]:
                 #       print(df[0].iloc[index_value])
@@ -198,23 +292,23 @@ class ExcelFile:
     def find_session_type(self, session_name):
         
 
-        if session_name.find("ALT") :
+        if session_name.find("ALT") != -1 :
             return "Sessions Alternantes"
-        elif session_name.find("Hors Cursus"):
+        elif session_name.find("HORS CURSUS") != -1:
             return "Hors Cursus - Atos Générique"
-        elif session_name.find("Isitech" or "XEFI"):
+        elif session_name.find("Isitech" or "XEFI") !=-1:
             return "Isitech - XEFI"
         else :
             return "Sessions Continues"
         
      
-    def get_session_dataframe(self, sheetName): 
-         feuille = self.open_worksheet(self.find_session_type(sheetName))
+    def get_session_dataframe(self, sheetName, sessionName): 
+        # feuille = self.open_worksheet(self.find_session_type(sheetName))
          
          excel_path = os.getenv("ALYFDEVPATH")
          
          #Faire 2 dataframes un avec seulement dates et l'autre présentera les sessions et les combiner par la suite
-         df_session_name_and_dates = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=1, nrows=3,  header=None)
+         df_session_name_and_dates = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=1, nrows=3,  header=None ,index_col=None)
          df_session_name_and_dates = df_session_name_and_dates.fillna('')
         
          
@@ -227,7 +321,9 @@ class ExcelFile:
        
        #   print(ind)
 
-         value =  "2iTECH-TSSR-2022 - ALT"
+         value =  sessionName
+         print(f" value: {value}")
+         #print(df_session_name_and_dates)
 
 # Extract Column Names
          column_index = df_session_name_and_dates.columns[df_session_name_and_dates.eq(value).any()].tolist()[0]
@@ -248,21 +344,26 @@ class ExcelFile:
 
          index_date_debut_session = list(df_index_calendrier_sessions.index[df_index_calendrier_sessions[0] == datetime.fromisoformat(date_debut_str)])[0]
 
-         df_modules_session = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=index_date_debut_session, nrows=number_of_rows,usecols=[column_index, column_index+1],  header=None)
+         df_modules_session = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=index_date_debut_session, nrows=number_of_rows,usecols=[column_index, column_index+1],  header=None, index_col=None)
 
          return df_modules_session
     
-    def create_list_cours_termines_et_futur(self, module_name, sheet_name):
-          df = self.get_session_dataframe(sheet_name)
+    def create_list_cours_termines_et_futur(self, module_name, sheet_name, session_name):
+          df = self.get_session_dataframe(sheet_name,session_name)
           df = df.fillna("")
-          unique_units = list(df[1].unique())
+          #print(df)
+          df.columns = [0,1]
+  
+          print(df.columns)
+          unique_units = df[0].unique()
           unique_units = list(filter(len, unique_units))
+          print(type(unique_units))
        
-          unique_units.remove("FERIE")
-          print("FERIE" in unique_units)
+          #unique_units.remove("FERIE")
+          #print("FERIE" in unique_units)
           
 
-          print(unique_units)
+          #print(unique_units)
 
           #il faut filtrer certains termes dont férié
 
@@ -271,6 +372,7 @@ class ExcelFile:
      
                 
           index_current_module  = unique_units.index(module_name)
+          print(index_current_module)
           cours_termines = []
           cours_futurs = []
 
@@ -278,7 +380,9 @@ class ExcelFile:
                 cours_termines.append(unique_units[i])
           for j in range(index_current_module,len(unique_units)):
                 cours_futurs.append(unique_units[j])
-          print(f"cours termines: {cours_termines}, cours_futurs:{cours_futurs}" )
+         # print(f"cours termines: {cours_termines}, cours_futurs:{cours_futurs}" )
+
+          return cours_termines, cours_futurs
        
          
           
