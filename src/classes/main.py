@@ -56,24 +56,28 @@ test1.get_formateur_worksheet("huynh")"""
 excel = ExcelFile.ExcelFile()
 #excel.open_worksheet()
 
+# test1.open_worksheet("Sessions Alternantes")
+
+# Module1 = Module.Module("Réseaux - Révision Réseau TCP/IP", date(2022, 9,19),  date(2024, 8, 2), "2iTECH-TSSR-2022 - ALT", [], [] )
+
+# print(Module1.get_nom_module())
 
 
-Module1 = Module.Module("Virtualisation", date(2024, 8, 31),  date(2024, 10, 10), "PRF Orly", ["linux", "windows server"], ["python"," java"]  )
 
 
 #Module1.getInfo()
 #Module1.getInfo()
 
-test1.open_worksheet("")
 
-test1.create_fullYearTeachingDataFrame_from_instructorSheet("DEV WEB")
 
-test1.create_module("DEV WEB")
+test1.create_fullYearTeachingDataFrame_from_instructorSheet("Sessions Alternantes")
 
+test1.create_module("Sessions Alternantes")
 
 
 test1.get_session_dataframe("Sessions Alternantes")
-test1.create_list_cours_termines_et_futur("Réseaux - Révision Réseau TCP/IP","Sessions Alternantes")
+
+
 
 
 

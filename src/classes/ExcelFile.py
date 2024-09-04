@@ -176,7 +176,9 @@ class ExcelFile:
                                 blocks[-1].append(dates_vals[i])
                   print(f"vérification de blocks : {blocks}")
                   
+                
                   for j in range(0, len(blocks)):
+                      
                       module_test = Module.Module(df[1].iloc[blocks[0][0]], df[0].iloc[blocks[j][0]], 
                                                   df[0].iloc[blocks[j][-1]],df[2].iloc[blocks[0][0]],"", "")
                       liste_cours_termines_et_futurs =  self.create_list_cours_termines_et_futur(module_test.get_nom_module,sheetName)
@@ -214,8 +216,9 @@ class ExcelFile:
          excel_path = os.getenv("ALYFDEVPATH")
          
          #Faire 2 dataframes un avec seulement dates et l'autre présentera les sessions et les combiner par la suite
-         df_session_name_and_dates = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=1, nrows=3,  header=None)
+         df_session_name_and_dates = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=1, header=None, nrows=3)
          df_session_name_and_dates = df_session_name_and_dates.fillna('')
+         print(df_session_name_and_dates)
         
          
          
@@ -229,9 +232,9 @@ class ExcelFile:
 
          value =  "2iTECH-TSSR-2022 - ALT"
 
-# Extract Column Names
+         # Extract Column Names
          column_index = df_session_name_and_dates.columns[df_session_name_and_dates.eq(value).any()].tolist()[0]
-         print(column_index+1)
+         #print(column_index+1)
          date_debut =df_session_name_and_dates[column_index+1][1]
          date_fin = df_session_name_and_dates[column_index+1][2]
         
@@ -256,6 +259,7 @@ class ExcelFile:
           df = self.get_session_dataframe(sheet_name)
           df = df.fillna("")
           unique_units = list(df[1].unique())
+        
           unique_units = list(filter(len, unique_units))
        
           unique_units.remove("FERIE")
@@ -269,8 +273,9 @@ class ExcelFile:
         
       
      
-                
+          
           index_current_module  = unique_units.index(module_name)
+          print(index_current_module)
           cours_termines = []
           cours_futurs = []
 
@@ -279,6 +284,8 @@ class ExcelFile:
           for j in range(index_current_module,len(unique_units)):
                 cours_futurs.append(unique_units[j])
           print(f"cours termines: {cours_termines}, cours_futurs:{cours_futurs}" )
+          
+        #   return "cours terminés : {}, cours futures : {}".format( {cours_termines}, {cours_futurs})
        
          
           
