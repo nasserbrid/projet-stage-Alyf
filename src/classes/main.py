@@ -19,7 +19,7 @@ from dotenv import load_dotenv, dotenv_values
 #print(f"{ExcelFile.excel} excel var")
 
 
-test1 = ExcelFile.ExcelFile()
+
 
 # new_formateur = Formateur.Formateur(144, "Eleonor","Huyhn", "h@h.fr")
 # new_formateur.consulterPlanning()
@@ -53,8 +53,8 @@ test1.get_formateur_worksheet("huynh")"""
 # print(q.get())
 
 
-excel = ExcelFile.ExcelFile()
-#excel.open_worksheet()
+# excel = ExcelFile.ExcelFile()
+# #excel.open_worksheet()
 
 # test1.open_worksheet("Sessions Alternantes")
 
@@ -63,24 +63,44 @@ excel = ExcelFile.ExcelFile()
 # print(Module1.get_nom_module())
 
 
+# Module1 = Module.Module("Virtualisation", date(2024, 8, 31),  date(2024, 10, 10), "PRF Orly", ["linux", "windows server"], ["python"," java"]  )
 
 
-#Module1.getInfo()
-#Module1.getInfo()
+# #Module1.getInfo()
+# #Module1.getInfo()
 
+# test1.open_worksheet("DEV WEB")
 
+# test1.create_fullYearTeachingDataFrame_from_instructorSheet("DEV WEB")
 
-test1.create_fullYearTeachingDataFrame_from_instructorSheet("Sessions Alternantes")
-
-test1.create_module("Sessions Alternantes")
-
-
-test1.get_session_dataframe("Sessions Alternantes")
-
+# test1.create_module("DEV WEB")
 
 
 
+# test1.get_session_dataframe("Sessions Alternantes")
+# # test1.create_list_cours_termines_et_futur("Réseaux - Révision Réseau TCP/IP","Sessions Alternantes")
 
 
+# test1 = ExcelFile.ExcelFile()
 
 
+# test1.open_worksheet("DEV WEB")
+
+
+# test1.get_formateur_worksheet("HUYNH")
+# #print(test1.worksheet.__dir__)
+
+# print(test1.create_module())
+
+
+# SOUKEINA = Formateur.Formateur(id =1, first_name="Soukeina", last_name="BEN CHIKHA", email="soukeina.benchikha@alyfpro.fr")
+
+# SOUKEINA.consulter_planning("DEV WEB")
+
+excel_file = ExcelFile.ExcelFile()
+excel_file.open_worksheet("DEV WEB")
+#Soukeina_excel_file.create_fullYearTeachingDataFrame_from_instructorSheet()
+excel_file.get_formateur_worksheet('Crocfer')
+excel_file.create_module()
+
+#print(excel_file.find_session_type('dffl ALT'))
