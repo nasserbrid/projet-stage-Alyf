@@ -1,7 +1,8 @@
 #import ExcelFile
+import uuid
 import pandas as pd
 import json
-from datetime import datetime
+from datetime import datetime,date, timedelta
 # importing os module for environment variables
 import os
 # importing necessary functions from dotenv library
@@ -12,6 +13,7 @@ load_dotenv()
 
 class Module:
     def __init__(self, nom_module, date_debut, date_fin,  session, modules_termines, modules_a_venir):
+         self.__id_module = uuid.uuid4()
          self.__nom_module = nom_module
          self.__date_debut = date_debut
          self.__date_fin = date_fin
@@ -20,6 +22,9 @@ class Module:
          self.__modules_a_venir = modules_a_venir
                    
 
+     
+    def get_id_module(self):
+            return self.__id_module
 
     def get_nom_module(self):
             return self.__nom_module
@@ -161,7 +166,43 @@ class Module:
                     
                      
            
+    def extract_module_dates(self):
+            
+           date_debut = self.get_date_debut()
+           date_fin = self.get_date_fin()
+           delta = timedelta(days=1)
+           dates = []
 
+           while date_debut <= date_fin:
+    # add current date to list by converting  it to iso format
+              dates.append(date_debut.isoformat())
+              print(type(date_debut.isoformat()))
+    # increment start date by timedelta
+              date_debut += delta
+           print('Dates between', date_debut, 'and', date_fin)
+           print(dates)
+           return dates
+        #    dates = [date for date in date(date_debut, date_fin)]
+        #    print(dates)
+                    
+            
+        #     return self.get_id_module, , self.get_date_fin
+            
+      
+
+
+
+# difference between current and previous date
+
+
+# store the dates between two dates in a list
+
+
+
+
+
+            
+            
 
     def getInfo(self):
         print(f"Le module est {self.get_nom_module()}, \n  la date de debut est {self.get_date_debut()}, \n la date de fin est {self.get_date_fin()}, \n il a appartient a la session {self.get_session()} \n il etait précédé de {self.get_modules_termines()} \n et sera suivi de {self.get_modules_a_venir()}") 
