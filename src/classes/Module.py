@@ -15,8 +15,8 @@ class Module:
     def __init__(self, nom_module, date_debut, date_fin,  session, modules_termines, modules_a_venir):
          self.__id_module = uuid.uuid4()
          self.__nom_module = nom_module
-         self.__date_debut = date_debut
-         self.__date_fin = date_fin
+         self.__date_debut = datetime.strptime(str(date_debut),'%Y-%m-%d')
+         self.__date_fin = datetime.strptime(str(date_fin),'%Y-%m-%d')
          self.__session = session
          self.__modules_termines = modules_termines
          self.__modules_a_venir = modules_a_venir
@@ -169,19 +169,23 @@ class Module:
     def extract_module_dates(self):
             
            date_debut = self.get_date_debut()
+           print(type(date_debut))
            date_fin = self.get_date_fin()
            delta = timedelta(days=1)
            dates = []
+          
 
            while date_debut <= date_fin:
     # add current date to list by converting  it to iso format
               dates.append(date_debut.isoformat())
-              print(type(date_debut.isoformat()))
+        #       dates.append(date_debut.strftime('%Y-%m-%d'))
+              print(type(date_debut))
     # increment start date by timedelta
               date_debut += delta
            print('Dates between', date_debut, 'and', date_fin)
            print(dates)
-           return dates
+           return dates 
+        #dates doit etre un tableau de chaine de characteres de dates au format iso
         #    dates = [date for date in date(date_debut, date_fin)]
         #    print(dates)
                     

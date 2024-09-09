@@ -46,6 +46,25 @@ class Calendar:
         week, w_day = self._yearmonthday_to_index(month, day)
         return self.events[month - 1][week][w_day]
       
+    
+
+    def  dictionaries_module_to_calendar(self, dico):
+        for key in dico:
+            for k in dico[key]:
+                 print(dico[key][k])
+                 self.add_module_to_calendrier(dico[key][k])
+
+
+    
+
+    # def dictionaries_module_to_calendar2(self,dico):
+    #     for key, value in dico.items():
+    #         print(f"{key} key")
+    #         print(f"{value} value")
+            
+                # self.add_module_to_calendrier(module)
+
+           
 
 
     def add_module_to_calendrier(self, module):
@@ -53,14 +72,13 @@ class Calendar:
        dates =  module.extract_module_dates()
         
        for date in dates:
-            #print(int(date[6:7]), int(date[8:]))
-            self.add_event(int(date[6:7]), int(date[8:]), {"id_module":module.get_id_module(), "nom_module":module.get_nom_module()})
+            # print(type(date))
+            # print(int(date[6:7]), int(date[8:]))
+            # print(date)
+            # print((date[5:7]), (date[8:10]))
+            self.add_event(int(date[5:7]), int(date[8:]), {"id_module":module.get_id_module(), "nom_module":module.get_nom_module()})
 
+           
      
-    def get_all_modules_from_calendar(self):
-        pass
-        # verifier s'il y a un evenement pour chaque case de self.events 
-        #si on trouve un module, recuperer les dates
-            
-        
+    
         
