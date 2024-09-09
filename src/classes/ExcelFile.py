@@ -160,6 +160,9 @@ class ExcelFile:
 
            liste_de_cours = df[1].unique()
            liste_de_cours= list(filter(len, liste_de_cours))
+
+           #need to have a method specifically designed to get all Indisponibilités for an instructor
+           liste_de_cours.remove("Indisponible")
           # print(f"liste de cours: {liste_de_cours}")
 
            #print(f"{liste_de_cours} liste de cours")
@@ -201,30 +204,43 @@ class ExcelFile:
                              #modkey = j
                              dico_module[cours][j] = Module.Module(df[1].iloc[blocks[0][0]], df[0].iloc[blocks[j][0]], 
                                                   df[0].iloc[blocks[j][-1]],df[2].iloc[blocks[0][0]],[],[])
+                             
+                             
+
+                             listecoursterminesetfuturs = self.create_list_cours_termines_et_futur(dico_module[cours][j].get_nom_module(),
+                                                                                                   self.find_session_type(dico_module[cours][j].get_session()), dico_module[cours][j].get_session())
+
+                             dico_module[cours][j].set_modules_termines(listecoursterminesetfuturs[0])
+                             dico_module[cours][j].set_modules_a_venir(listecoursterminesetfuturs[1])
+
+                             print(f"modules terminés : {dico_module[cours][j].get_modules_termines()}")
                  
+                             print(f"modules à venir : {dico_module[cours][j].get_modules_a_venir()}")
+        
+           return dico_module
           # print(self.find_session_type(dico_module["Ecoute & Relation Clients"][0].get_session()))
                   
-           list_session = []
+           #list_session = []
           # print(dico_module)
 
-           testmod = dico_module["Ecoute & Relation Clients"][0]
+          # testmod = dico_module["Ecoute & Relation Clients"][0]
 
-           listecoursterminesetfuturs = self.create_list_cours_termines_et_futur(testmod.get_nom_module(),self.find_session_type(testmod.get_session()), testmod.get_session())
-          # print(listecoursterminesetfuturs)
+        #    listecoursterminesetfuturs = self.create_list_cours_termines_et_futur(testmod.get_nom_module(),self.find_session_type(testmod.get_session()), testmod.get_session())
+        #   # print(listecoursterminesetfuturs)
 
-           #print(f" liste cours termines et futur{listecoursterminesetfuturs}")
+        #    #print(f" liste cours termines et futur{listecoursterminesetfuturs}")
 
-           c = self.create_list_cours_termines_et_futur(testmod.get_nom_module(),self.find_session_type(testmod.get_session()), testmod.get_session())
+        #    c = self.create_list_cours_termines_et_futur(testmod.get_nom_module(),self.find_session_type(testmod.get_session()), testmod.get_session())
 
           # print(c[0])
 
 
 
-           testmod.set_modules_termines(c[0])
-           testmod.set_modules_a_venir(c[1])
+        #    testmod.set_modules_termines(c[0])
+        #    testmod.set_modules_a_venir(c[1])
 
-           print(testmod.get_modules_termines())
-           print(testmod.get_modules_a_venir())
+        #    print(testmod.get_modules_termines())
+        #    print(testmod.get_modules_a_venir())
                 #       module_test.set_modules_a_venir = liste_cours_termines_et_futurs[1]
         #    for key in dico_module:
         #               for internal_key in dico_module[key]:
@@ -323,12 +339,12 @@ class ExcelFile:
        #   print(ind)
 
          value =  sessionName
-         print(f" value: {value}")
+        #  print(f" value: {value}")
          #print(df_session_name_and_dates)
 
          # Extract Column Names
          column_index = df_session_name_and_dates.columns[df_session_name_and_dates.eq(value).any()].tolist()[0]
-         #print(column_index+1)
+        #  print(column_index+1)
          date_debut =df_session_name_and_dates[column_index+1][1]
          date_fin = df_session_name_and_dates[column_index+1][2]
         
@@ -355,10 +371,10 @@ class ExcelFile:
           #print(df)
           df.columns = [0,1]
   
-          print(df.columns)
+        #   print(df.columns)
           unique_units = df[0].unique()
           unique_units = list(filter(len, unique_units))
-          print(type(unique_units))
+        #   print(type(unique_units))
        
           #unique_units.remove("FERIE")
           #print("FERIE" in unique_units)
@@ -370,10 +386,10 @@ class ExcelFile:
 
         
       
-     
           
+                
           index_current_module  = unique_units.index(module_name)
-          print(index_current_module)
+        #   print(index_current_module)
           cours_termines = []
           cours_futurs = []
 
