@@ -11,6 +11,8 @@ from datetime import date
 import os
 # importing necessary functions from dotenv library
 from dotenv import load_dotenv, dotenv_values 
+
+import CalendrierPlanning
 # loading variables from .env file
 # load_dotenv() 
 
@@ -101,6 +103,59 @@ excel_file = ExcelFile.ExcelFile()
 excel_file.open_worksheet("DEV WEB")
 #Soukeina_excel_file.create_fullYearTeachingDataFrame_from_instructorSheet()
 excel_file.get_formateur_worksheet('Crocfer')
-excel_file.create_module()
+dico = excel_file.create_modules()
+# print(dico)
 
-#print(excel_file.find_session_type('dffl ALT'))
+# #print(excel_file.find_session_type('dffl ALT'))
+
+# # test_calendar = CalendrierPlanning.Calendar(2024)
+
+# dico_calendrier = excel_file.create_module()
+
+#pseudocode idea for adding modules to calendar
+# for value in dico_calendrier:
+#     dates = value.extract_module_dates()
+#     calendrier.add_module_to_calendrier(modulename,dates )
+# test_calendar.add_event(10, 7,"module")
+
+
+# # test_calendar._yearmonthday_to_index(10)
+
+# dico = {}
+# testModule = Module.Module("blue", date(2024,5,6), date(2024,6,6), "pink","","")
+
+# testModule_1 = Module.Module("yellow", date(2024,4,6), date(2024,7,6), "red","","")
+
+# testModule_2 = Module.Module("green", date(2024,2,10), date(2024,3,10), "yellow","","")
+
+# dico = {"1": testModule, "2": testModule_1, "3": testModule_2}
+
+
+calendrier_test = CalendrierPlanning.Calendar(2024)
+
+
+# dates_test = dico.extract_module_dates()
+#calendrier_test.add_module_to_calendrier(dico)
+# calendrier_test.add_module_to_calendrier(testModule)
+
+#print(calendrier_test.get_events_for_day(6,5))
+
+# calendrier_test.dictionaries_module_to_calendar(dico)
+
+
+
+# dictioTest = {"coursdemath":{0:Module.Module("cours1","2024-10-03","2024-10-04", "sessiontest","","")},1:Module.Module("cours2","2024-11-03","2024-11-04", "sessiontest","","")}
+# dico.extract_module_dates()
+calendrier_test.dictionaries_module_to_calendar(dico)
+
+#print(testModule.get_id_module())
+
+# test_calendar.displayevents(10,7)
+
+
+
+# calendrier_test.displayevents(4,7)
+
+# print(enumerate(test_calendar.yearcal).__repr__())
+
+

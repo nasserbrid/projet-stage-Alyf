@@ -149,7 +149,7 @@ class ExcelFile:
      
      #Pour des raisons de lisibilité, nous utiliserons une autre méthode pour transformer nos données en JSON.            
 
-    def create_module(self):
+    def create_modules(self):
             #cette methode permettra de recuperer toutes les infos du module
             #On récupère les modules
             
@@ -176,6 +176,7 @@ class ExcelFile:
                   #print(f"datesindex: {dates}")
                   dates_vals = []
                   for date in dates:
+                         print(type(date))
                          dates_vals.append(date)
                  # print(f" dates_vals: {dates_vals} ")
                  # print(f"vérification de dates_vals : {dates_vals}")
@@ -213,9 +214,9 @@ class ExcelFile:
                              dico_module[cours][j].set_modules_termines(listecoursterminesetfuturs[0])
                              dico_module[cours][j].set_modules_a_venir(listecoursterminesetfuturs[1])
 
-                             print(f"modules terminés : {dico_module[cours][j].get_modules_termines()}")
+                        #      print(f"modules terminés : {dico_module[cours][j].get_modules_termines()}")
                  
-                             print(f"modules à venir : {dico_module[cours][j].get_modules_a_venir()}")
+                        #      print(f"modules à venir : {dico_module[cours][j].get_modules_a_venir()}")
         
            return dico_module
           # print(self.find_session_type(dico_module["Ecoute & Relation Clients"][0].get_session()))
