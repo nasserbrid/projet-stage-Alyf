@@ -51,8 +51,18 @@ class Calendar:
     def  dictionaries_module_to_calendar(self, dico):
         for key in dico:
             for k in dico[key]:
-                 print(dico[key][k])
-                 self.add_module_to_calendrier(dico[key][k])
+                print(f"nom module : {dico[key][k].get_nom_module()},id module : {dico[key][k].get_id_module()}")
+                self.add_module_to_calendrier(dico[key][k])
+              
+        # for key in dico.values():
+        #     print(key)
+        #     self.add_module_to_calendrier(dico[key])
+            
+               
+                
+                 
+               
+                 
 
 
     
@@ -73,10 +83,10 @@ class Calendar:
         
        for date in dates:
             # print(type(date))
-            # print(int(date[6:7]), int(date[8:]))
+            # print(int(date[6:7]), int(date[8:10]))
             # print(date)
             # print((date[5:7]), (date[8:10]))
-            self.add_event(int(date[5:7]), int(date[8:]), {"id_module":module.get_id_module(), "nom_module":module.get_nom_module()})
+            self.add_event(int(date[5:7]), int(date[8:10]), {"id_module":module.get_id_module(), "nom_module":module.get_nom_module()})
 
            
      
