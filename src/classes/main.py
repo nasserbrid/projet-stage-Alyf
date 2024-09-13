@@ -102,13 +102,13 @@ test1.get_formateur_worksheet("huynh")"""
 excel_file = ExcelFile.ExcelFile()
 excel_file.open_worksheet("DEV WEB")
 #Soukeina_excel_file.create_fullYearTeachingDataFrame_from_instructorSheet()
-excel_file.get_formateur_worksheet('Crocfer')
+excel_file.get_formateur_worksheet('huynh')
 dico = excel_file.create_modules()
 # print(dico)
 
 # #print(excel_file.find_session_type('dffl ALT'))
 
-# # test_calendar = CalendrierPlanning.Calendar(2024)
+# test_calendar = CalendrierPlanning.Calendar(2024)
 
 # dico_calendrier = excel_file.create_module()
 
@@ -131,7 +131,7 @@ dico = excel_file.create_modules()
 # dico = {"1": testModule, "2": testModule_1, "3": testModule_2}
 
 
-calendrier_test = CalendrierPlanning.Calendar(2024)
+# calendrier_test = CalendrierPlanning.Calendar(2024)
 
 
 # dates_test = dico.extract_module_dates()
@@ -146,7 +146,7 @@ calendrier_test = CalendrierPlanning.Calendar(2024)
 
 # dictioTest = {"coursdemath":{0:Module.Module("cours1","2024-10-03","2024-10-04", "sessiontest","","")},1:Module.Module("cours2","2024-11-03","2024-11-04", "sessiontest","","")}
 # dico.extract_module_dates()
-calendrier_test.dictionaries_module_to_calendar(dico)
+# calendrier_test.dictionaries_module_to_calendar(dico)
 
 #print(testModule.get_id_module())
 

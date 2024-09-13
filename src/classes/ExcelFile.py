@@ -26,10 +26,10 @@ class ExcelFile:
     def open_worksheet(self, sheetName):
            
            # self.EXCEL.Visible = True 
-            ExcelFile.EXCEL.Visible = True
+            ExcelFile.EXCEL.Visible = False
            # if self.EXCEL.Visible == True :
-            if ExcelFile.EXCEL.Visible == True:
-                   print("excel is visible")
+            if ExcelFile.EXCEL.Visible == False:
+                   print("excel is not visible (but running in background)")
                   
                                 
                    try:
@@ -37,12 +37,13 @@ class ExcelFile:
                        # self.workbook = self.EXCEL.Workbooks.Open("C:\\Users\\nasse\\projet-stage-Alyf\\Test-fichier-excel\\alyfData.xlsm")
                        
                         self.workbook = ExcelFile.EXCEL.Workbooks.Open(os.getenv("ALYFMASTERPATH"))
+                        print(self.workbook)
                         #print(self.workbook)
                 
                         self.worksheet = self.workbook.Sheets(sheetName)
                         
 
-                        print(self.workbook)
+                        # print(self.workbook)
                       
                    except FileNotFoundError:
                          print("Le fichier Excel est introuvable.")
@@ -306,18 +307,39 @@ class ExcelFile:
                 #       print(df[0].iloc[index_value])
                     
      
+#     def find_session_type(self,session_name):
+        
+       
+#         if session_name.find("ALT") != -1 :
+#             return "Sessions Alternantes"
+#         elif session_name.find("HORS CURSUS") != -1:
+#             return "Hors Cursus - Atos Générique"
+#         elif session_name.find("Isitech" or "XEFI" or "ISI") != -1 :
+#             return "Isitech - XEFI"
+#         else :
+#             return "Sessions Continues"
+    
+    
     def find_session_type(self, session_name):
-        
+            
 
-        if session_name.find("ALT") != -1 :
-            return "Sessions Alternantes"
-        elif session_name.find("HORS CURSUS") != -1:
-            return "Hors Cursus - Atos Générique"
-        elif session_name.find("Isitech" or "XEFI") !=-1:
-            return "Isitech - XEFI"
-        else :
-            return "Sessions Continues"
-        
+    # Define a dictionary with keywords as keys and corresponding session names as values
+      keywords = {
+        "Isitech - XEFI": ["isi", "ISI", "isitech", "xefi", "XEFI", "ISITECH", "XEFI"],
+        "Sessions Alternantes": ["ALT", "alt"],
+        "Hors Cursus - Atos Générique": ["HC", "HORS CURSUS", "hors cursus", "horscursus", "ATOS", "atos", "ATOS GENERIQUE"]
+     }
+ 
+    # Check if any keyword from the lists is in the input string
+      for key, values in keywords.items():
+           if any(value in session_name for value in values):
+             return key
+ 
+    # Default return value if no match is found
+      return "Sessions Continues"
+ 
+ 
+    
      
     def get_session_dataframe(self, sheetName, sessionName): 
         # feuille = self.open_worksheet(self.find_session_type(sheetName))
@@ -351,6 +373,7 @@ class ExcelFile:
         
          number_of_rows_delta = date_fin - date_debut
          number_of_rows = number_of_rows_delta.days
+         print(number_of_rows)
          
         
 
@@ -363,6 +386,7 @@ class ExcelFile:
          index_date_debut_session = list(df_index_calendrier_sessions.index[df_index_calendrier_sessions[0] == datetime.fromisoformat(date_debut_str)])[0]
 
          df_modules_session = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=index_date_debut_session, nrows=number_of_rows,usecols=[column_index, column_index+1],  header=None, index_col=None)
+         print(len(df_modules_session.index))
 
          return df_modules_session
     
@@ -374,7 +398,12 @@ class ExcelFile:
   
         #   print(df.columns)
           unique_units = df[0].unique()
+          print(f"unique_units : {unique_units}")
+          
+          if len(unique_units.index) >= 366:
+           print(unique_units.iloc[350:366])
           unique_units = list(filter(len, unique_units))
+          print(unique_units)
         #   print(type(unique_units))
        
           #unique_units.remove("FERIE")

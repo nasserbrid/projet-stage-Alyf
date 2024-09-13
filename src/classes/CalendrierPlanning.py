@@ -58,15 +58,6 @@ class Calendar:
         #     print(key)
         #     self.add_module_to_calendrier(dico[key])
             
-               
-                
-                 
-               
-                 
-
-
-    
-
     # def dictionaries_module_to_calendar2(self,dico):
     #     for key, value in dico.items():
     #         print(f"{key} key")
