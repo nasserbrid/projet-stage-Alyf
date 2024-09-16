@@ -2,7 +2,7 @@ import win32com.client
 import time
 # importing os module for environment variables
 import os
-import Module
+from . import Module
 import pandas as pd
 from datetime import date
 from datetime import datetime
@@ -15,48 +15,50 @@ load_dotenv()
 
 
 class ExcelFile:
-    EXCEL = win32com.client.Dispatch("Excel.Application")
+#     EXCEL = win32com.client.Dispatch("Excel.Application")
    # EXCEL.DisplayAlerts = False attempting to overwrite without notification
     def __init__(self, workbook= None , worksheet= None, macro = None):
+        self.excel = win32com.client.Dispatch("Excel.Application")
         self.workbook = workbook
         self.worksheet = worksheet 
         self.macro = macro
+       
+        
         
 
     def open_worksheet(self, sheetName):
            
            # self.EXCEL.Visible = True 
-            ExcelFile.EXCEL.Visible = False
-           # if self.EXCEL.Visible == True :
-            if ExcelFile.EXCEL.Visible == False:
-                   print("excel is not visible (but running in background)")
+            self.excel.Visible = True
+           # if self.EXCEL.Visible == True :s
+            if self.excel.Visible == True:
+                   print("excel is visible")
                   
                                 
                    try:
                                           
                        # self.workbook = self.EXCEL.Workbooks.Open("C:\\Users\\nasse\\projet-stage-Alyf\\Test-fichier-excel\\alyfData.xlsm")
                        
-                        self.workbook = ExcelFile.EXCEL.Workbooks.Open(os.getenv("ALYFMASTERPATH"))
-                        print(self.workbook)
+                        self.workbook = self.excel.Workbooks.Open(os.getenv("ALYFMASTERPATH"))
                         #print(self.workbook)
                 
                         self.worksheet = self.workbook.Sheets(sheetName)
                         
 
-                        # print(self.workbook)
+                        print(self.workbook)
                       
                    except FileNotFoundError:
                          print("Le fichier Excel est introuvable.")
                          
                         # self.EXCEL.Quit()
-                         ExcelFile.EXCEL.Quit()
+                         self.excel.Quit()
 
                          exit(1)
                    except Exception as e:
                         print('La feuille "DEV WEB" est introuvable:', e)
                         self.workbook.Close(SaveChanges=False)
                         #self.EXCEL.Quit()
-                        ExcelFile.EXCEL.Quit()
+                        self.excel.Quit()
                         exit(1)
 
                     
@@ -74,7 +76,7 @@ class ExcelFile:
           #self.EXCEL.Quit()
        
 
-          ExcelFile.EXCEL.Quit()
+          self.excel.Quit()
           
           
     #Définir une méthode qui permet d'utiliser le dataframe et qui va récupérer des sessions dans "DEV WEB"
@@ -307,19 +309,6 @@ class ExcelFile:
                 #       print(df[0].iloc[index_value])
                     
      
-#     def find_session_type(self,session_name):
-        
-       
-#         if session_name.find("ALT") != -1 :
-#             return "Sessions Alternantes"
-#         elif session_name.find("HORS CURSUS") != -1:
-#             return "Hors Cursus - Atos Générique"
-#         elif session_name.find("Isitech" or "XEFI" or "ISI") != -1 :
-#             return "Isitech - XEFI"
-#         else :
-#             return "Sessions Continues"
-    
-    
     def find_session_type(self, session_name):
             
 
@@ -338,8 +327,7 @@ class ExcelFile:
     # Default return value if no match is found
       return "Sessions Continues"
  
- 
-    
+        
      
     def get_session_dataframe(self, sheetName, sessionName): 
         # feuille = self.open_worksheet(self.find_session_type(sheetName))
@@ -349,7 +337,6 @@ class ExcelFile:
          #Faire 2 dataframes un avec seulement dates et l'autre présentera les sessions et les combiner par la suite
          df_session_name_and_dates = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=1, nrows=3,  header=None ,index_col=None)
          df_session_name_and_dates = df_session_name_and_dates.fillna('')
-         print(df_session_name_and_dates)
         
          
          
@@ -365,7 +352,7 @@ class ExcelFile:
         #  print(f" value: {value}")
          #print(df_session_name_and_dates)
 
-         # Extract Column Names
+# Extract Column Names
          column_index = df_session_name_and_dates.columns[df_session_name_and_dates.eq(value).any()].tolist()[0]
         #  print(column_index+1)
          date_debut =df_session_name_and_dates[column_index+1][1]
@@ -373,7 +360,6 @@ class ExcelFile:
         
          number_of_rows_delta = date_fin - date_debut
          number_of_rows = number_of_rows_delta.days
-         print(number_of_rows)
          
         
 
@@ -386,7 +372,6 @@ class ExcelFile:
          index_date_debut_session = list(df_index_calendrier_sessions.index[df_index_calendrier_sessions[0] == datetime.fromisoformat(date_debut_str)])[0]
 
          df_modules_session = pd.read_excel(excel_path, sheet_name=sheetName, skiprows=index_date_debut_session, nrows=number_of_rows,usecols=[column_index, column_index+1],  header=None, index_col=None)
-         print(len(df_modules_session.index))
 
          return df_modules_session
     
@@ -400,8 +385,7 @@ class ExcelFile:
           unique_units = df[0].unique()
           print(f"unique_units : {unique_units}")
           
-          if len(unique_units.index) >= 366:
-           print(unique_units.iloc[350:366])
+         
           unique_units = list(filter(len, unique_units))
           print(unique_units)
         #   print(type(unique_units))
@@ -414,8 +398,10 @@ class ExcelFile:
 
           #il faut filtrer certains termes dont férié
 
-        
-      
+       
+          if module_name not in unique_units:
+             print(f"Erreur: {module_name} n'est pas dans unique_units.")
+             return [], []
           
                 
           index_current_module  = unique_units.index(module_name)
@@ -445,12 +431,12 @@ class ExcelFile:
        
 
          
+         
 
    
          
 
 
-         
          
          
          
